@@ -1,0 +1,43 @@
+version: '3'
+services:
+  prometheus:
+    image: "prom/prometheus"
+    ports:
+     - "9090:9090"
+    volumes:
+     - /var/prometheus:/prometheus
+     - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    environment:
+     - storage.tsdb.retention=30d
+  prometheus2:
+    image: "prom/prometheus"
+    ports:
+     - "9091:9090"
+    volumes:
+     - /var/prometheus2:/prometheus
+     - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    environment:
+     - storage.tsdb.retention=30d
+  alertmanager:
+    image: "prom/alertmanager"
+    ports:
+     - "9093:9093"
+    volumes:
+     - /etc/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    command: ["--storage.path=/alertmanager", "--cluster.peer=alertmanager2:6783", "--cluster.listen-address=:6783"]
+  alertmanager2:
+    image: "prom/alertmanager"
+    ports:
+     - "9094:9093"
+    volumes:
+     - /etc/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    command: ["--storage.path=/alertmanager", "--cluster.peer=alertmanager:6783", "--cluster.listen-address=:6783"]
+  grafana:
+    image: "grafana/grafana"
+    ports:
+     - "3000:3000/tcp"
+    user: "104"
+    volumes:
+     - /var/lib/grafana:/var/lib/grafana
+    environment:
+     - GF_AUTH_BASIC_ENABLED=false

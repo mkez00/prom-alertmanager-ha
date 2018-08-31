@@ -1,0 +1,23 @@
+global:
+  resolve_timeout: 5m
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'email.me'
+receivers:
+- name: 'email.me'
+  email_configs:
+  - to: email@email.com
+    from: no-reply@email.com
+    smarthost: email-smtp.us-east-1.amazonaws.com:587
+    auth_username: "AKIAXXXXXXXXXXXXXX"
+    auth_password: "<SECRET_ACCESS_KEY>"
+    require_tls: true
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
