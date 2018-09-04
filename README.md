@@ -9,3 +9,11 @@ The following Vagrantfile demonstrates how one could configure a HA setup of Pro
 - Have multiple Alertmanagers configured in a cluster and share settings (like Silences)
 - Alerts still trigger when one of the Prometheus instances is stopped/removed
 - Notifications still trigger when one of the Alertmanager instances is stopped/removed
+
+## Setup and Testing
+
+1. Clone/download project source code
+2. Run `vagrant up` from project root
+3. Update alert Receiver's (this project has a sample AWS SES setup) by updating `/etc/alertmanager/alertmanager.yml` in both Docker nodes.  Access Docker nodes using `vagrant ssh docker-node-1` and `vagrant ssh docker-node-2`
+4. Restart Alertmanager Docker container on both Docker nodes (`docker ps` to get list of Docker containers.  Copy ID of Alertmanager.  Restart using `docker restart <CONTAINER_ID>`)
+5. Poweroff worker node to trigger alert
