@@ -10,10 +10,11 @@ scrape_configs:
   - targets:
     - 192.168.56.90:9100
     - 192.168.56.91:9100
+    - 192.168.56.92:9100
 rule_files:
   - '/prometheus/alerts.yml'
 alerting:
   alertmanagers:
     - scheme: http
       static_configs:
-        - targets: ['alertmanager:9093','alertmanager2:9093']
+        - targets: ['192.168.56.90:9093','192.168.56.91:9093']

@@ -16,7 +16,7 @@ services:
      - "6783:6783"
     volumes:
      - /etc/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
-    command: ["--storage.path=/alertmanager", "--cluster.peer=192.168.56.91:6783", "--cluster.listen-address=:6783"]
+    command: ["--storage.path=/alertmanager", "--cluster.peer=192.168.56.90:6783", "--cluster.listen-address=:6783"]
   grafana:
     image: "grafana/grafana"
     ports:
